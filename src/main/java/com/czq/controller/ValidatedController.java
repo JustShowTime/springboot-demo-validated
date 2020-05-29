@@ -1,15 +1,24 @@
 package com.czq.controller;
 
+import java.util.Map;
+
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.czq.controller.result.ResultHelper;
+import com.czq.entity.ValidInfo;
+import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
 
 /**
  * 必须加上@Validated，否则无法校验
@@ -40,28 +49,33 @@ import org.springframework.web.bind.annotation.RestController;
 public class ValidatedController {
 
 	@RequestMapping(value="/notNull", method=RequestMethod.GET)
-    public String getUserStr(@NotNull(message = "name 不能为空") String name) {
-        return "name: " + name ;
+    public ResponseEntity<Map<String, ?>> getUserStr(@NotNull(message = "name 不能为空") String name) {
+        return ResultHelper.successItemSingle(name);
     }
 	
 	@RequestMapping(value="/assertFalse", method=RequestMethod.GET)
-    public String getUserStrFalse(@AssertFalse(message = "name 必须是Boolean类型，且值为false") Boolean name) {
-        return "name: " + name ;
+    public ResponseEntity<Map<String, ?>> getUserStrFalse(@AssertFalse(message = "name 必须是Boolean类型，且值为false") Boolean name) {
+		return ResultHelper.successItemSingle(name);
     }
 	
 	@RequestMapping(value="/assertTrue", method=RequestMethod.GET)
-    public String getUserStrTrue(@AssertTrue(message = "name 必须是Boolean类型，且值为true") Boolean name) {
-        return "name: " + name ;
+    public ResponseEntity<Map<String, ?>> getUserStrTrue(@AssertTrue(message = "name 必须是Boolean类型，且值为true") Boolean name) {
+        return ResultHelper.successItemSingle(name);
     }
 	
 	@RequestMapping(value="/decimalMax", method=RequestMethod.GET)
-    public String getUserStrMax(@DecimalMax(message = "name 必须是数字，且值小于等于给定的值", value = "5") Integer name) {
-        return "name: " + name ;
+    public ResponseEntity<Map<String, ?>> getUserStrMax(@DecimalMax(message = "name 必须是数字，且值小于等于给定的值", value = "5") Integer name) {
+		return ResultHelper.successItemSingle(name);
     }
 	
 	@RequestMapping(value="/decimalMin", method=RequestMethod.GET)
-    public String getUserStrMin(@DecimalMin(message = "name 必须是数字，且值大于等于给定的值", value = "5") Integer name) {
-        return "name: " + name ;
+    public ResponseEntity<Map<String, ?>> getUserStrMin(@DecimalMin(message = "name 必须是数字，且值大于等于给定的值", value = "5") Integer name) {
+		return ResultHelper.successItemSingle(name);
+    }
+	
+	@RequestMapping(value="/validInfo", method=RequestMethod.POST)
+    public ResponseEntity<Map<String, ?>> getUserValidInfo(@RequestBody  @Validated ValidInfo name) {
+		return ResultHelper.successItemSingle(name);
     }
 	
 	
